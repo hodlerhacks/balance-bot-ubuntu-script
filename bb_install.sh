@@ -1,10 +1,9 @@
 ##################################################################################
 #!/bin/bash
 # to install : wget -P /tmp -L https://raw.githubusercontent.com/hodlerhacks/balance-bot-ubuntu-script/master/bb_install.sh bb_install.sh;bash /tmp/bb_install.sh
-# Balance Bot UBUNTU/DEBIAN INSTALLATION/MANAGEMENT SCRIPT
-# Version : 2.1
+# Balance Bot UBUNTU/DEBIAN Installer
 ##################################################################################
-SCRIPTVERSION="2.1.0"
+SCRIPTVERSION="2.1.1"
 BBPATH=/var/opt
 BBFOLDER=balance-botv2
 BBSCRIPTFOLDER=balance-bot-ubuntu-script
@@ -138,8 +137,7 @@ show_whitelist() {
 	ufw status verbose
 }
 
-new_install() { 
-	## Install packages ##
+install_packages() {
 	echo "### Installing packages ###"
 	apt -y update
 	apt -y install git
@@ -148,6 +146,16 @@ new_install() {
 	npm install pm2@latest -g
 	apt -y update
 
+	## Set maximum pm2 log file size and number of rotate files
+	pm2 install pm2-logrotate
+	pm2 set pm2-logrotate:max_size 10M
+	pm2 set pm2-logrotate:retain 2
+}
+
+new_install() { 
+	## Install packages ##
+	install_packages
+	
 	## Creating local repository ##
 	echo "### Downloading Balance Bot ###"
 	
@@ -186,13 +194,7 @@ reinstall_bot() {
 	rm -r "$BBPATH"/"$BBFOLDER"
 
 	## Install packages ##
-	echo "### Installing packages ###"
-	apt -y update
-	apt -y install git
-	apt -y install -y nodejs
-	apt -y install npm
-	npm install pm2@latest -g
-	apt -y update
+	install_packages
 
 	## Creating local repository ##
 	echo "### Downloading Balance Bot ###"

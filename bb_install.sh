@@ -3,7 +3,7 @@
 # to install : wget -P /tmp -L https://raw.githubusercontent.com/hodlerhacks/balance-bot-ubuntu-script/master/bb_install.sh bb_install.sh;bash /tmp/bb_install.sh
 # Balance Bot UBUNTU/DEBIAN Installer
 ##################################################################################
-SCRIPTVERSION="2.1.1"
+SCRIPTVERSION="2.2.0"
 BBPATH=/var/opt
 BBFOLDER=balance-botv2
 BBSCRIPTFOLDER=balance-bot-ubuntu-script
@@ -102,41 +102,6 @@ reload_shell() {
 	exec bash
 }
 
-enable_ufw() {
-	clear
-	echo "This function has been deprecated!"
-	echo ""
-	echo "Use the IP Whitelisting option in the Balance Bot's Bot Manager instead"
-	echo "(See settings menu in the application)"
-	echo ""
-	echo "Enter IP address to be whitelisted - MAKE SURE IT IS CORRECT OR BE LOCKED OUT"
-	echo "If not sure, check WHATSMYIP.ORG to find your IP address"
-	echo ""
-	read -p "IP to be whitelisted : " WhistlistIP
-	ufw allow from $WhistlistIP
-	ufw default deny incoming
-	echo "y" | sudo ufw enable
-	clear
-	ufw status verbose
-}
-
-delete_ufw() {
-	clear
-	ufw status numbered
-	read -p "Please enter number to be deleted or CTRL-C to cancel: " entry_number
-	ufw delete $entry_number
-	clear 
-	ufw status verbose
-}
-
-disable_ufw() {
-	ufw disable
-}
-
-show_whitelist() {
-	ufw status verbose
-}
-
 install_packages() {
 	echo "### Installing packages ###"
 	apt -y update
@@ -168,7 +133,10 @@ new_install() {
 	else
 		git clone "$INSTALLREPOSITORY" "$BBPATH"/"$BBFOLDER"
 	fi
-			
+
+	## Open port 3000
+	sudo ufw allow 3000
+
 	## Start bot ##
 	echo "### Starting Balance Bot ###"
 	pm2_install
@@ -264,14 +232,6 @@ until [ "$selection" = "0" ]; do
 	echo "" 
 	echo "      0  -  Exit"
 	echo ""
-	echo "--------------- Deprecated Functions --------------------"
-	echo "(Use whitelist functionality in BB's Bot Manager instead)"
-	echo ""
-	echo "      5  -  Enable Whitelist"
-	echo "      6  -  Show Whitelist"
-	echo "      7  -  Remove IP from Whitelist"
-	echo "      8  -  Disable Whitelist"
-	echo "" 
 	echo "---------------------------------------------------------"
 	echo "" 
 	echo -n "  Enter selection: "
@@ -285,10 +245,6 @@ until [ "$selection" = "0" ]; do
 		1s ) clear ; INSTALLREPOSITORY=$BBREPOSITORYSTAGING ; new_install ;;
 		2s ) clear ; bb_update ; restart_bot 2>/dev/null ; press_enter ;;
 		3s) clear ; INSTALLREPOSITORY=$BBREPOSITORYSTAGING ; reinstall_bot ;;
-		5 ) clear ; enable_ufw ; press_enter ;;
-		6 ) clear ; show_whitelist ; press_enter ;;
-		7 ) clear ; delete_ufw ; press_enter ;;
-		8 ) clear ; disable_ufw ; press_enter ;;
 		s ) clear ; stop_bot ; press_enter ;;
 		r ) clear ; restart_bot ; press_enter ;;
 		u ) clear ; bbscript_update ; check_bashrc_shortcuts; press_enter ;bbscript_refresh ;;	

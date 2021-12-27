@@ -69,13 +69,10 @@ stop_bot () {
 	pm2 stop BalanceBot
 }
 
-list_bots () {
-	pm2 list
-}
-
-bb_update() {
-	cd "$BBPATH"/"$BBFOLDER"
-	git pull --ff-only origin master
+bbscript_install() {
+	cd
+	rm -r "$BBPATH"/"$BBSCRIPTFOLDER"
+	git clone "$BBSCRIPTREPOSITORY" "$BBPATH"/"$BBSCRIPTFOLDER"
 }
 
 bbscript_update() {
@@ -86,12 +83,6 @@ bbscript_update() {
 	else
 		git clone "$BBSCRIPTREPOSITORY" "$BBPATH"/"$BBSCRIPTFOLDER"
 	fi
-}
-
-bbscript_install() {
-	cd
-	rm -r "$BBPATH"/"$BBSCRIPTFOLDER"
-	git clone "$BBSCRIPTREPOSITORY" "$BBPATH"/"$BBSCRIPTFOLDER"
 }
 
 bbscript_refresh() {
@@ -118,22 +109,24 @@ install_packages() {
 	pm2 set pm2-logrotate:retain 2
 }
 
-new_install() { 
+bb_update() {
+	cd "$BBPATH"/"$BBFOLDER"
+    node install.js INSTALLOPTION
+	cd /
+}
+
+bb_install() { 
+	pm2 delete all
+
 	## Install packages ##
 	install_packages
 	
 	## Creating local repository ##
 	echo "### Downloading Balance Bot ###"
 	
-	if [ -d "$BBPATH"/"$BBFOLDER" ]; then
-	# If local repository exists check for updates		
-		CWD="$PWD"
-		cd "$BBPATH"/"$BBFOLDER"
-		git pull --ff-only origin master
-		restart_bot
-	else
-		git clone "$INSTALLREPOSITORY" "$BBPATH"/"$BBFOLDER"
-	fi
+    cd "$BBPATH"/"$BBFOLDER"
+    node install.js INSTALLOPTION
+	cd /
 
 	## Open port 3000
 	sudo ufw allow 3000
@@ -151,52 +144,6 @@ new_install() {
 	bbscript_refresh
 }
 
-reinstall_bot() {
-	pm2 delete all
-	cd
-
-	if [ -d "$BBPATH"/"$BBFOLDER"/config/ ]; then
-		mkdir /tmp/config/
-		cp "$BBPATH"/"$BBFOLDER"/config/* /tmp/config/
-	fi
-
-	rm -r "$BBPATH"/"$BBFOLDER"
-
-	## Install packages ##
-	install_packages
-
-	## Creating local repository ##
-	echo "### Downloading Balance Bot ###"
-	
-	git clone "$INSTALLREPOSITORY" "$BBPATH"/"$BBFOLDER"
-		
-	## Recover config files
-	mkdir "$BBPATH"/"$BBFOLDER"/config/
-	cp /tmp/config/* "$BBPATH"/"$BBFOLDER"/config/
-
-	# Check if installation was successful
-	if [ -d "$BBPATH"/"$BBFOLDER"/config/ ]; then
-		rm -r /tmp/config/
-	fi
-
-	## Start bot ##
-	echo "### Starting Balance Bot ###"
-	pm2_install
-
-	## Create PM2 startup ##
-	pm2 startup
-
-	## Add or update shortcuts
-	check_bashrc_shortcuts
-	restart_bot
-	bbscript_refresh
-}
-
-if [[ $EUID -ne 0 ]]; then
-   	echo "This script must be run as root"
-   	exit 1
-fi
-
 press_enter() {
 	echo ""
   	echo -n "	Press Enter to continue "
@@ -207,6 +154,11 @@ press_enter() {
 incorrect_selection() {
   	echo "Incorrect selection! Try again."
 }
+
+if [[ $EUID -ne 0 ]]; then
+   	echo "This script must be run as root"
+   	exit 1
+fi
 
 ## Install or update at startup
 bbscript_update
@@ -239,12 +191,12 @@ until [ "$selection" = "0" ]; do
 	read selection
 	echo ""
 	case $selection in
-		1 ) clear ; INSTALLOPTION=1 ; new_install ;;
+		1 ) clear ; INSTALLOPTION=1 ; bb_install ;;
 		2 ) clear ; INSTALLOPTION=2 ; bb_update ; restart_bot 2>/dev/null ; press_enter ;;
-		3 ) clear ; INSTALLOPTION=3 ; reinstall_bot;;
-		1s ) clear ; INSTALLOPTION=1s ;  new_install ;;
+		3 ) clear ; INSTALLOPTION=3 ; bb_install;;
+		1s ) clear ; INSTALLOPTION=1s ;  bb_install ;;
 		2s ) clear ; INSTALLOPTION=2s ; bb_update ; restart_bot 2>/dev/null ; press_enter ;;
-		3s) clear ; INSTALLOPTION=3s ; reinstall_bot ;;
+		3s) clear ; INSTALLOPTION=3s ; bb_install ;;
 		s ) clear ; stop_bot ; press_enter ;;
 		r ) clear ; restart_bot ; press_enter ;;
 		u ) clear ; bbscript_update ; check_bashrc_shortcuts; press_enter ;bbscript_refresh ;;	

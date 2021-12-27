@@ -41,10 +41,10 @@ migrate_bot() {
 	git clone "$BBINSTALLERREPOSITORY" "$BBPATH"/"$BBFOLDER"
 
     ## Run install.js to do a clean install
-    node install.js 1
+    "$BBPATH"/"$BBFOLDER"/node install.js 1
 		
     press_enter
-    
+
 	## Recover config files
 	mkdir "$BBPATH"/"$BBFOLDER"/bb/config/
 	cp /tmp/config/* "$BBPATH"/"$BBFOLDER"/bb/config/
@@ -73,6 +73,7 @@ until [ "$selection" = "0" ]; do
 	echo "---------------------------------------------------------"
 	echo ""
 	echo "                  Balance Bot Migration"
+	echo "                          v0.0.1"
 	echo ""
 	echo "---------------------------------------------------------"
 	echo ""

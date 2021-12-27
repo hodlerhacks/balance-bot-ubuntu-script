@@ -3,7 +3,7 @@
 # to use : wget -P /tmp -L https://raw.githubusercontent.com/hodlerhacks/balance-bot-ubuntu-script/master/bb_migrate.sh bb_migrate.sh;bash /tmp/bb_migrate.sh
 # Balance Bot UBUNTU/DEBIAN Migration tool
 ##################################################################################
-SCRIPTVERSION="1.0.0"
+SCRIPTVERSION="1.1.0"
 BBPATH=/var/opt
 BBFOLDER=balance-botv2
 BBSCRIPTFOLDER=balance-bot-ubuntu-script
@@ -55,7 +55,7 @@ migrate_bot() {
     ## Run install.js to do a clean install
     CWD="$PWD"
     cd "$BBPATH"/"$BBFOLDER"
-    node install.js 1
+    node install.js "$INSTALLOPTION"
 	cd
 
     press_enter
@@ -103,6 +103,7 @@ until [ "$selection" = "0" ]; do
 	read selection
 	echo ""
 	case $selection in
-		1 ) clear ; migrate_bot ;;
+		1 ) clear ; INSTALLOPTION=1 ; migrate_bot ;;
+		1s ) clear ; INSTALLOPTION=1s ; migrate_bot ;;
 	esac
 done

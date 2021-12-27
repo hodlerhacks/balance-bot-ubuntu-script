@@ -80,9 +80,11 @@ pm2_install () {
 }
 
 if [ -d "$BBPATH"/"$BBFOLDER"/bb/config/ ]; then
+	clear
 	echo "---------------------------------------------------------"
     echo "Balance Bot has already been migrated"
 	echo "---------------------------------------------------------"
+	echo "" 
     exit
 fi
 

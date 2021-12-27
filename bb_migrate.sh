@@ -12,6 +12,8 @@ PM2FILE=bb.js
 
 ############################## Functions #########################################
 
+show_menu
+
 migrate_bot() {
 	pm2 delete all
 	cd
@@ -35,7 +37,7 @@ migrate_bot() {
 	git clone "$BBINSTALLERREPOSITORY" "$BBPATH"/"$BBFOLDER"
 
     ## Run install.js to do a clean install
-    node install 1
+    node install.js 1
 		
 	## Recover config files
 	mkdir "$BBPATH"/"$BBFOLDER"/bb/config/
@@ -69,24 +71,26 @@ incorrect_selection() {
   	echo "Incorrect selection! Try again."
 }
 
-until [ "$selection" = "0" ]; do
-	clear
-	echo "---------------------------------------------------------"
-	echo ""
-	echo "                  Balance Bot Migration"
-	echo ""
-	echo "---------------------------------------------------------"
-	echo ""
-	echo "      1  -  Migrate Balance Bot"
-	echo "      0  -  Exit"
-	echo ""
-	echo "---------------------------------------------------------"
-	echo "" 
-	echo -n "  Enter selection: "
-	read selection
-	echo ""
-	case $selection in
-		1 ) clear ; migrate_bot ;;
-		* ) clear ; incorrect_selection ; press_enter ;;
-	esac
-done
+show_menu () {
+    until [ "$selection" = "0" ]; do
+        clear
+        echo "---------------------------------------------------------"
+        echo ""
+        echo "                  Balance Bot Migration"
+        echo ""
+        echo "---------------------------------------------------------"
+        echo ""
+        echo "      1  -  Migrate Balance Bot"
+        echo "      0  -  Exit"
+        echo ""
+        echo "---------------------------------------------------------"
+        echo "" 
+        echo -n "  Enter selection: "
+        read selection
+        echo ""
+        case $selection in
+            1 ) clear ; migrate_bot ;;
+            * ) clear ; incorrect_selection ; press_enter ;;
+        esac
+    done
+}

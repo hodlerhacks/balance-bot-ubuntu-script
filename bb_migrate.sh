@@ -22,6 +22,7 @@ migrate_bot() {
 	pm2 delete all
 	cd
 
+	## Save config files
 	if [ -d "$BBPATH"/"$BBFOLDER"/config/ ]; then
 		mkdir /tmp/config/
 		cp "$BBPATH"/"$BBFOLDER"/config/* /tmp/config/
@@ -44,7 +45,7 @@ migrate_bot() {
     CWD="$PWD"
     cd "$BBPATH"/"$BBFOLDER"
     node install.js 1
-	cd /
+	cd
 
     press_enter
 

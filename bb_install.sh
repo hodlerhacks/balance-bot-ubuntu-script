@@ -3,7 +3,7 @@
 # to install : wget -P /tmp -L https://raw.githubusercontent.com/hodlerhacks/balance-bot-ubuntu-script/master/bb_install.sh bb_install.sh;bash /tmp/bb_install.sh
 # Balance Bot UBUNTU/DEBIAN Installer
 ##################################################################################
-SCRIPTVERSION="2.3.3"
+SCRIPTVERSION="2.3.5"
 BBPATH=/var/opt
 BBFOLDER=balance-botv2
 BBSCRIPTFOLDER=balance-bot-ubuntu-script
@@ -119,13 +119,22 @@ press_enter() {
 bb_update() {
 	cd "$BBPATH"/"$BBFOLDER"
     node install.js "$INSTALLOPTION"
-	cd /
+	cd
 
     press_enter
 }
 
 bb_install() { 
 	pm2 delete all
+	cd
+
+	## Save config files
+	if [ -d "$BBPATH"/"$BBFOLDER"/bb/config/ ]; then
+		mkdir /tmp/config/
+		cp "$BBPATH"/"$BBFOLDER"/bb/config/* /tmp/config/
+    fi
+
+	rm -r "$BBPATH"/"$BBFOLDER"
 
 	## Install packages
 	install_packages
@@ -133,6 +142,15 @@ bb_install() {
 	## Install bb
 	git clone "$BBINSTALLERREPOSITORY" "$BBPATH"/"$BBFOLDER"
 	bb_update
+
+	## Recover config files
+	mkdir "$BBPATH"/"$BBFOLDER"/bb/config/
+	cp /tmp/config/* "$BBPATH"/"$BBFOLDER"/bb/config/
+
+	# Check if installation was successful
+	if [ -d "$BBPATH"/"$BBFOLDER"/bb/config/ ]; then
+		rm -r /tmp/config/
+	fi
 
 	## Open port 3000
 	sudo ufw allow 3000
@@ -160,7 +178,6 @@ if [[ $EUID -ne 0 ]]; then
 fi
 
 ## Install or update at startup
-bbscript_update
 check_bashrc_shortcuts
 
 until [ "$selection" = "0" ]; do

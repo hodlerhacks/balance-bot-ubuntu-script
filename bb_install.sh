@@ -3,7 +3,7 @@
 # to install : wget -P /tmp -L https://raw.githubusercontent.com/hodlerhacks/balance-bot-ubuntu-script/master/bb_install.sh bb_install.sh;bash /tmp/bb_install.sh
 # Balance Bot UBUNTU/DEBIAN Installer
 ##################################################################################
-SCRIPTVERSION="2.3.0"
+SCRIPTVERSION="2.3.1"
 BBPATH=/var/opt
 BBFOLDER=balance-botv2
 BBSCRIPTFOLDER=balance-bot-ubuntu-script
@@ -118,24 +118,20 @@ bb_update() {
 bb_install() { 
 	pm2 delete all
 
-	## Install packages ##
+	## Install packages
 	install_packages
 	
-	## Creating local repository ##
-	echo "### Downloading Balance Bot ###"
-	
-    cd "$BBPATH"/"$BBFOLDER"
-    node install.js INSTALLOPTION
-	cd /
+	## Install bb
+	bb_update
 
 	## Open port 3000
 	sudo ufw allow 3000
 
-	## Start bot ##
+	## Start bot
 	echo "### Starting Balance Bot ###"
 	pm2_install
 
-	## Create PM2 startup ##
+	## Create PM2 startup
 	pm2 startup
 
 	## Add or update shortcuts

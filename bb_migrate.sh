@@ -3,7 +3,7 @@
 # to use : wget -P /tmp -L https://raw.githubusercontent.com/hodlerhacks/balance-bot-ubuntu-script/master/bb_migrate.sh bb_migrate.sh;bash /tmp/bb_migrate.sh
 # Balance Bot UBUNTU/DEBIAN Migration tool
 ##################################################################################
-SCRIPTVERSION="1.1.0"
+SCRIPTVERSION="1.0.1"
 BBPATH=/var/opt
 BBFOLDER=balance-botv2
 BBSCRIPTFOLDER=balance-bot-ubuntu-script
@@ -37,12 +37,6 @@ migrate_bot() {
 	if [ -d "$BBPATH"/"$BBFOLDER"/config/ ]; then
 		mkdir /tmp/config/
 		cp "$BBPATH"/"$BBFOLDER"/config/* /tmp/config/
-    else
-    	if [ -d "$BBPATH"/"$BBFOLDER"/bb/config/ ]; then
-            echo "It seems that migration has already been performed"
-        else
-            echo "It seems that Balance Bot is not properly installed or setup"
-        fi
     fi
 
 	rm -r "$BBPATH"/"$BBFOLDER"
@@ -84,6 +78,13 @@ pm2_install () {
 	cd "$BBPATH"/"$BBFOLDER";pm2 start "$PM2FILE" --name=BalanceBot
 	pm2 save
 }
+
+if [ -d "$BBPATH"/"$BBFOLDER"/bb/config/ ]; then
+	echo "---------------------------------------------------------"
+    echo "Balance Bot has already been migrated"
+	echo "---------------------------------------------------------"
+    exit
+fi
 
 until [ "$selection" = "0" ]; do
 	clear

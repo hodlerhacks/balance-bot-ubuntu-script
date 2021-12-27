@@ -60,17 +60,6 @@ pm2_install () {
 	pm2 save
 }
 
-press_enter() {
-	echo ""
-  	echo -n "	Press Enter to continue "
-  	read
-  	clear
-}
-
-incorrect_selection() {
-  	echo "Incorrect selection! Try again."
-}
-
 until [ "$selection" = "0" ]; do
 	clear
 	echo "---------------------------------------------------------"
@@ -89,6 +78,5 @@ until [ "$selection" = "0" ]; do
 	echo ""
 	case $selection in
 		1 ) clear ; migrate_bot ;;
-		* ) clear ; incorrect_selection ; press_enter ;;
 	esac
 done

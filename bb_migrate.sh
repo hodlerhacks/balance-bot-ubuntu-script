@@ -79,24 +79,28 @@ pm2_install () {
 	pm2 save
 }
 
+print_header () {
+    clear
+    echo "---------------------------------------------------------"
+    echo ""
+    echo "                  Balance Bot Migration"
+    echo "                         v"$SCRIPTVERSION
+    echo ""
+    echo "---------------------------------------------------------"
+    echo ""
+}
+
 if [ -d "$BBPATH"/"$BBFOLDER"/bb/config/ ]; then
-	clear
-	echo "---------------------------------------------------------"
-    echo "Balance Bot has already been migrated"
+    print_header
+    echo "           Balance Bot has already been migrated"
+	echo "" 
 	echo "---------------------------------------------------------"
 	echo "" 
     exit
 fi
 
 until [ "$selection" = "0" ]; do
-	clear
-	echo "---------------------------------------------------------"
-	echo ""
-	echo "                  Balance Bot Migration"
-	echo "                         v"$SCRIPTVERSION
-	echo ""
-	echo "---------------------------------------------------------"
-	echo ""
+    print_header
 	echo "      1  -  Migrate Balance Bot"
 	echo "      0  -  Exit"
 	echo ""

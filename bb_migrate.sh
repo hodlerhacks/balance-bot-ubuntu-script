@@ -90,7 +90,7 @@ until [ "$selection" = "0" ]; do
 	echo "---------------------------------------------------------"
 	echo ""
 	echo "                  Balance Bot Migration"
-	echo "                          v0.0.2"
+	echo "                         v"$SCRIPTVERSION
 	echo ""
 	echo "---------------------------------------------------------"
 	echo ""

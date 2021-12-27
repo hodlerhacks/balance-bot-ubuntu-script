@@ -25,7 +25,7 @@ migrate_bot() {
         else
             echo "It seems that Balance Bot is not properly installed or setup"
         fi
-	fi
+    fi
 
 	rm -r "$BBPATH"/"$BBFOLDER"
 
@@ -56,6 +56,17 @@ migrate_bot() {
 pm2_install () { 
 	cd "$BBPATH"/"$BBFOLDER";pm2 start "$PM2FILE" --name=BalanceBot
 	pm2 save
+}
+
+press_enter() {
+	echo ""
+  	echo -n "	Press Enter to continue "
+  	read
+  	clear
+}
+
+incorrect_selection() {
+  	echo "Incorrect selection! Try again."
 }
 
 until [ "$selection" = "0" ]; do

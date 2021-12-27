@@ -24,6 +24,7 @@ migrate_bot() {
             echo "It seems that migration has already been performed"
         else
             echo "It seems that Balance Bot is not properly installed or setup"
+        fi
 	fi
 
 	rm -r "$BBPATH"/"$BBFOLDER"

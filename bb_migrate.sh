@@ -58,7 +58,7 @@ migrate_bot() {
 	mkdir "$BBPATH"/"$BBFOLDER"/bb/config/
 	cp /tmp/config/* "$BBPATH"/"$BBFOLDER"/bb/config/
 
-	# Check if installation was successful
+	# Check if migration was successful
 	if [ -d "$BBPATH"/"$BBFOLDER"/bb/config/ ]; then
 		rm -r /tmp/config/
 	fi

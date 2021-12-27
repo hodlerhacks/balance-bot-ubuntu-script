@@ -12,6 +12,12 @@ PM2FILE=bb.js
 
 ############################## Functions #########################################
 
+press_enter() {
+	echo ""
+  	echo -n "	Press Enter to continue "
+  	read
+}
+
 migrate_bot() {
 	pm2 delete all
 	cd
@@ -37,6 +43,8 @@ migrate_bot() {
     ## Run install.js to do a clean install
     node install.js 1
 		
+    press_enter
+    
 	## Recover config files
 	mkdir "$BBPATH"/"$BBFOLDER"/bb/config/
 	cp /tmp/config/* "$BBPATH"/"$BBFOLDER"/bb/config/

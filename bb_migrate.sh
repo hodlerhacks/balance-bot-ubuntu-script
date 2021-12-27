@@ -12,8 +12,6 @@ PM2FILE=bb.js
 
 ############################## Functions #########################################
 
-show_menu
-
 migrate_bot() {
 	pm2 delete all
 	cd
@@ -53,6 +51,8 @@ migrate_bot() {
 	pm2_install
 	pm2 startup
 	pm2 restart BalanceBot
+
+    exit
 }
 
 pm2_install () { 
@@ -71,26 +71,24 @@ incorrect_selection() {
   	echo "Incorrect selection! Try again."
 }
 
-show_menu () {
-    until [ "$selection" = "0" ]; do
-        clear
-        echo "---------------------------------------------------------"
-        echo ""
-        echo "                  Balance Bot Migration"
-        echo ""
-        echo "---------------------------------------------------------"
-        echo ""
-        echo "      1  -  Migrate Balance Bot"
-        echo "      0  -  Exit"
-        echo ""
-        echo "---------------------------------------------------------"
-        echo "" 
-        echo -n "  Enter selection: "
-        read selection
-        echo ""
-        case $selection in
-            1 ) clear ; migrate_bot ;;
-            * ) clear ; incorrect_selection ; press_enter ;;
-        esac
-    done
-}
+until [ "$selection" = "0" ]; do
+	clear
+	echo "---------------------------------------------------------"
+	echo ""
+	echo "                  Balance Bot Migration"
+	echo ""
+	echo "---------------------------------------------------------"
+	echo ""
+	echo "      1  -  Migrate Balance Bot"
+	echo "      0  -  Exit"
+	echo ""
+	echo "---------------------------------------------------------"
+	echo "" 
+	echo -n "  Enter selection: "
+	read selection
+	echo ""
+	case $selection in
+		1 ) clear ; migrate_bot ;;
+		* ) clear ; incorrect_selection ; press_enter ;;
+	esac
+done

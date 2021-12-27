@@ -9,6 +9,7 @@ BBFOLDER=balance-botv2
 BBSCRIPTFOLDER=balance-bot-ubuntu-script
 BBREPOSITORY=https://github.com/hodlerhacks/balance-bot-v2.git
 BBREPOSITORYSTAGING=https://github.com/hodlerhacks/balance-bot-v2-staging.git
+BBINSTALLERREPOSITORY=https://github.com/hodlerhacks/balance.git
 BBSCRIPTREPOSITORY=https://github.com/hodlerhacks/balance-bot-ubuntu-script.git
 PM2FILE=bb.js
 
@@ -237,14 +238,13 @@ until [ "$selection" = "0" ]; do
 	echo -n "  Enter selection: "
 	read selection
 	echo ""
-	INSTALLREPOSITORY=$BBREPOSITORY
 	case $selection in
-		1 ) clear ; new_install ;;
-		2 ) clear ; bb_update ; restart_bot 2>/dev/null ; press_enter ;;
-		3 ) clear ; reinstall_bot;;
-		1s ) clear ; INSTALLREPOSITORY=$BBREPOSITORYSTAGING ; new_install ;;
-		2s ) clear ; bb_update ; restart_bot 2>/dev/null ; press_enter ;;
-		3s) clear ; INSTALLREPOSITORY=$BBREPOSITORYSTAGING ; reinstall_bot ;;
+		1 ) clear ; INSTALLOPTION=1 ; new_install ;;
+		2 ) clear ; INSTALLOPTION=2 ; bb_update ; restart_bot 2>/dev/null ; press_enter ;;
+		3 ) clear ; INSTALLOPTION=3 ; reinstall_bot;;
+		1s ) clear ; INSTALLOPTION=1s ;  new_install ;;
+		2s ) clear ; INSTALLOPTION=2s ; bb_update ; restart_bot 2>/dev/null ; press_enter ;;
+		3s) clear ; INSTALLOPTION=3s ; reinstall_bot ;;
 		s ) clear ; stop_bot ; press_enter ;;
 		r ) clear ; restart_bot ; press_enter ;;
 		u ) clear ; bbscript_update ; check_bashrc_shortcuts; press_enter ;bbscript_refresh ;;	

@@ -8,6 +8,7 @@ BBPATH=/var/opt
 BBFOLDER=balance-botv2
 BBSCRIPTFOLDER=balance-bot-ubuntu-script
 BBINSTALLERREPOSITORY=https://github.com/hodlerhacks/balance.git
+BBSCRIPTREPOSITORY=https://github.com/hodlerhacks/balance-bot-ubuntu-script.git
 PM2FILE=bb.js
 
 ############################## Functions #########################################
@@ -16,6 +17,16 @@ press_enter() {
 	echo ""
   	echo -n "	Press Enter to continue "
   	read
+}
+
+bbscript_update() {
+	if [ -d "$BBPATH"/"$BBSCRIPTFOLDER" ]; then
+	# If local repository exists check for updates		
+		cd "$BBPATH"/"$BBSCRIPTFOLDER"
+			git pull --ff-only origin master
+	else
+		git clone "$BBSCRIPTREPOSITORY" "$BBPATH"/"$BBSCRIPTFOLDER"
+	fi
 }
 
 migrate_bot() {
@@ -57,6 +68,8 @@ migrate_bot() {
 	if [ -d "$BBPATH"/"$BBFOLDER"/bb/config/ ]; then
 		rm -r /tmp/config/
 	fi
+
+    bbscript_update
 
 	## Start bot ##
 	echo "### Starting Balance Bot ###"

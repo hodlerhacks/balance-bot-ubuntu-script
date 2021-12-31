@@ -178,6 +178,7 @@ if [[ $EUID -ne 0 ]]; then
 fi
 
 ## Install or update at startup
+bbscript_update
 check_bashrc_shortcuts
 
 until [ "$selection" = "0" ]; do

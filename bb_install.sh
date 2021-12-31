@@ -3,7 +3,7 @@
 # to install : wget -P /tmp -L https://raw.githubusercontent.com/hodlerhacks/balance-bot-ubuntu-script/master/bb_install.sh bb_install.sh;bash /tmp/bb_install.sh
 # Balance Bot UBUNTU/DEBIAN Installer
 ##################################################################################
-SCRIPTVERSION="2.3.0"
+SCRIPTVERSION="2.3.1"
 BBPATH=/var/opt
 BBFOLDER=balance-botv2
 BBSCRIPTFOLDER=balance-bot-ubuntu-script

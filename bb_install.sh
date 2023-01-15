@@ -131,7 +131,7 @@ bb_install() {
 	## Save config files
 	if [ -d "$BBPATH"/"$BBFOLDER"/bb/config/ ]; then
 		mkdir /tmp/config/
-		cp "$BBPATH"/"$BBFOLDER"/bb/config/* /tmp/config/
+		cp -R "$BBPATH"/"$BBFOLDER"/bb/config/* /tmp/config/
     fi
 
 	## Save log files
@@ -152,7 +152,7 @@ bb_install() {
 	## Recover config files
 	if [ -d /tmp/config/ ]; then
 		mkdir "$BBPATH"/"$BBFOLDER"/bb/config/
-		cp /tmp/config/* "$BBPATH"/"$BBFOLDER"/bb/config/
+		cp -R /tmp/config/* "$BBPATH"/"$BBFOLDER"/bb/config/
     fi
 
 	## Recover log files

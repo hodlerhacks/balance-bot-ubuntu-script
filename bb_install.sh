@@ -3,7 +3,7 @@
 # to install : wget -P /tmp -L https://raw.githubusercontent.com/hodlerhacks/balance-bot-ubuntu-script/master/bb_install.sh bb_install.sh;bash /tmp/bb_install.sh
 # Balance Bot UBUNTU/DEBIAN Installer
 ##################################################################################
-SCRIPTVERSION="2.3.1"
+SCRIPTVERSION="2.6.1"
 BBPATH=/var/opt
 BBFOLDER=balance-botv2
 BBSCRIPTFOLDER=balance-bot-ubuntu-script
@@ -134,6 +134,12 @@ bb_install() {
 		cp "$BBPATH"/"$BBFOLDER"/bb/config/* /tmp/config/
     fi
 
+	## Save log files
+	if [ -d "$BBPATH"/"$BBFOLDER"/bb/logs/ ]; then
+		mkdir /tmp/logs/
+		cp "$BBPATH"/"$BBFOLDER"/bb/logs/* /tmp/logs/
+    fi
+
 	rm -r "$BBPATH"/"$BBFOLDER"
 
 	## Install packages
@@ -144,12 +150,21 @@ bb_install() {
 	bb_update
 
 	## Recover config files
-	mkdir "$BBPATH"/"$BBFOLDER"/bb/config/
-	cp /tmp/config/* "$BBPATH"/"$BBFOLDER"/bb/config/
+	if [ -d /tmp/config/ ]; then
+		mkdir "$BBPATH"/"$BBFOLDER"/bb/config/
+		cp /tmp/config/* "$BBPATH"/"$BBFOLDER"/bb/config/
+    fi
+
+	## Recover log files
+	if [ -d /tmp/logs/ ]; then
+		mkdir "$BBPATH"/"$BBFOLDER"/bb/logs/
+		cp /tmp/logs/* "$BBPATH"/"$BBFOLDER"/bb/logs/
+	fi
 
 	# Check if installation was successful
 	if [ -d "$BBPATH"/"$BBFOLDER"/bb/config/ ]; then
 		rm -r /tmp/config/
+		rm -r /tmp/logs/
 	fi
 
 	## Open port 3000

@@ -3,7 +3,7 @@
 # to install : wget -P /tmp -L https://raw.githubusercontent.com/hodlerhacks/balance-bot-ubuntu-script/master/bb_install.sh bb_install.sh;bash /tmp/bb_install.sh
 # Balance Bot UBUNTU/DEBIAN Installer
 ##################################################################################
-SCRIPTVERSION="2.6.1"
+SCRIPTVERSION="2.7.0"
 BBPATH=/var/opt
 BBFOLDER=balance-botv2
 BBSCRIPTFOLDER=balance-bot-ubuntu-script
@@ -98,7 +98,8 @@ install_packages() {
 	echo "### Installing packages ###"
 	apt -y update
 	apt -y install git
-	apt -y install -y nodejs
+	curl -fsSL https://deb.nodesource.com/setup_20.x | bash -
+	apt -y install nodejs
 	apt -y install npm
 	npm install pm2@latest -g
 	apt -y update
